@@ -68,7 +68,7 @@ jobs:
         path: client
         retention-days: 30
     - name: Upload to S3
-      id: deploy
+      id: s3
       uses: VKCOM/gh-actions/VKUI/s3@main
       with:
         awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -79,7 +79,7 @@ jobs:
         commandUploadSrc: client
         commandUploadDist: testdeploy-${{github.run_id}}
     - uses: actions/github-script@v6
-      if: ${{ steps.deploy.outcome == 'success' }}
+      if: ${{ steps.s3.outcome == 'success' }}
       with:
         script: |
           github.rest.issues.createComment({
@@ -88,6 +88,6 @@ jobs:
             repo: context.repo.repo,
             body: `
             👋 Build a ready!
-            You can check online by goes to ${{ env.AWS_S3_URL }}/testdeploy/index.html
+            You can check online by goes to ${{ env.AWS_S3_URL }}/testdeploy-${{github.run_id}}/index.html
             `
           })
