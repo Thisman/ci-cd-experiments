@@ -67,7 +67,19 @@ jobs:
         name: app-test-build
         path: client
         retention-days: 30
+    - name: Upload to S3
+      id: deploy
+      uses: VKCOM/gh-actions/VKUI/s3@main
+      with:
+        awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        awsSecretAccessKey: ${{ secrets.AWS_SECRET_KEY }}
+        awsBucket: ${{ vars.AWS_BUCKET }}
+        awsEndpoint: https://${{ vars.AWS_ENDPOINT }}
+        command: upload
+        commandUploadSrc: client
+        commandUploadDist: testdeploy-${{github.run_id}}
     - uses: actions/github-script@v6
+      if: ${{ steps.deploy.outcome == 'success' }}
       with:
         script: |
           github.rest.issues.createComment({
