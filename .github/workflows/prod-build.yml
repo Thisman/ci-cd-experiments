@@ -27,7 +27,7 @@ jobs:
       with:
         awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
         awsSecretAccessKey: ${{ secrets.AWS_SECRET_KEY }}
-        awsBucket: ${{ vars.AWS_TEST_BUCKET }}
+        awsBucket: ${{ vars.AWS_PROD_BUCKET }}
         awsEndpoint: https://${{ vars.AWS_ENDPOINT }}
         command: upload
         commandUploadSrc: client
