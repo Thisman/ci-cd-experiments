@@ -1,9 +1,9 @@
-name: Linters
+name: Prod Build
 on:
-  pull_request:
+  push:
     branches: [ main, master ]
 jobs:
-  test:
+  Build:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -13,7 +13,5 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm install -g yarn && yarn
-    - name: Run eslint
-      run: yarn check:js
-    - name: Run css linter
-      run: yarn check:css
+    - name: Build
+      run: echo "Build prod version"
