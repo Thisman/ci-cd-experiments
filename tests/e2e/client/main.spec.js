@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('Click action button', async ({ page }) => {
-  await page.goto('http://localhost');
+  await page.goto('http://localhost:3000');
 
   const button = page.getByTestId('action-button');
   await button.click();
@@ -9,7 +9,7 @@ test('Click action button', async ({ page }) => {
 });
 
 test('Click action button, when one active', async ({ page }) => {
-  await page.goto('http://localhost');
+  await page.goto('http://localhost:3000');
 
   const button = page.getByTestId('action-button');
   await button.click();

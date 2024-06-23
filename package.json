@@ -5,7 +5,8 @@
   "main": "server/app.js",
   "devDependencies": {
     "@playwright/test": "^1.44.1",
-    "@types/node": "^20.14.8"
+    "@types/node": "^20.14.8",
+    "cross-env": "^7.0.3"
   },
   "scripts": {
     "tests:all": "yarn tests:unit && yarn tests:e2e",
@@ -13,7 +14,8 @@
     "tests:e2e": "yarn playwright test",
     "check:js": "echo check:js",
     "check:css": "echo check:css",
-    "start": "node ./server/app.mjs"
+    "start": "node ./server/app.mjs",
+    "start:test": "cross-env SERVER_PORT=3000 node ./server/app.mjs"
   },
   "repository": {
     "type": "git",

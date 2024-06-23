@@ -2,7 +2,7 @@ import express from 'express';
 import { log } from './console.mjs';
 
 const app = express();
-const port = 80;
+const port = process.env.SERVER_PORT || 80;
 
 app.use('/', express.static('./client'));
 
