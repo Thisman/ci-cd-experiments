@@ -1,0 +1,25 @@
+.main {
+    width: 600px;
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-container {
+    margin-top: 15px;
+}
+
+.button {
+    padding: 15px 25px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+}
+
+.clicked {
+    background: #333;
+    color: white;
+}
