@@ -2,6 +2,10 @@ name: Test Build
 on:
   pull_request:
     branches: [ main, master ]
+
+env:
+  AWS_S3_URL: https://${{ vars.AWS_TEST_BUCKET }}.${{ vars.AWS_ENDPOINT }}
+
 jobs:
   Linters:
     timeout-minutes: 60
@@ -42,7 +46,7 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  Build:
+  Deploy:
     permissions:
       pull-requests: write
     needs: [Linters, Tests]
@@ -63,12 +67,27 @@ jobs:
         name: app-test-build
         path: client
         retention-days: 30
+    - name: Upload to S3
+      id: s3
+      uses: VKCOM/gh-actions/VKUI/s3@main
+      with:
+        awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        awsSecretAccessKey: ${{ secrets.AWS_SECRET_KEY }}
+        awsBucket: ${{ vars.AWS_TEST_BUCKET }}
+        awsEndpoint: https://${{ vars.AWS_ENDPOINT }}
+        command: upload
+        commandUploadSrc: client
+        commandUploadDist: testdeploy-${{github.run_id}}
     - uses: actions/github-script@v6
+      if: ${{ steps.s3.outcome == 'success' }}
       with:
         script: |
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: '👋 Thanks for reporting!'
+            body: `
+            👋 Build a ready!
+            You can check online by goes to ${{ env.AWS_S3_URL }}/testdeploy-${{github.run_id}}/index.html
+            `
           })
