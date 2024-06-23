@@ -4,7 +4,7 @@ on:
     branches: [ main, master ]
 
 env:
-  AWS_S3_URL: https://${{ vars.AWS_BUCKET }}.${{ vars.AWS_ENDPOINT }}
+  AWS_S3_URL: https://${{ vars.AWS_TEST_BUCKET }}.${{ vars.AWS_ENDPOINT }}
 
 jobs:
   Linters:
@@ -73,7 +73,7 @@ jobs:
       with:
         awsAccessKeyId: ${{ secrets.AWS_ACCESS_KEY_ID }}
         awsSecretAccessKey: ${{ secrets.AWS_SECRET_KEY }}
-        awsBucket: ${{ vars.AWS_BUCKET }}
+        awsBucket: ${{ vars.AWS_TEST_BUCKET }}
         awsEndpoint: https://${{ vars.AWS_ENDPOINT }}
         command: upload
         commandUploadSrc: client
