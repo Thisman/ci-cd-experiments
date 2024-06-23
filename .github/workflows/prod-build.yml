@@ -14,4 +14,10 @@ jobs:
     - name: Install dependencies
       run: npm install -g yarn && yarn
     - name: Build
-      run: echo "Build prod version"
+      run: echo "Build prod version"\
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: app-prod-build
+        path: client
+        retention-days: 30
