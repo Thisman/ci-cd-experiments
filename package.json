@@ -19,9 +19,10 @@
     "check:all": "yarn check:js && yarn check:css && yarn check:metrcis",
     "check:js": "echo check:js",
     "check:css": "echo check:css",
-    "check:metrics": "lighthouse http://localhost --output=json --output-path=./metrics/lighthouse.report.json --save-assets",
+    "check:metrics": "lighthouse http://localhost:3001 --output=json --output-path=./metrics/lighthouse.report.json --save-assets",
     "start": "node ./server/app.mjs",
-    "start:test": "cross-env SERVER_PORT=3000 node ./server/app.mjs"
+    "start:test": "cross-env SERVER_PORT=3000 node ./server/app.mjs",
+    "start:lighthouse": "cross-env SERVER_PORT=3001 node ./server/app.mjs"
   },
   "repository": {
     "type": "git",
