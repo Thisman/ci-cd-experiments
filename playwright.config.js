@@ -71,7 +71,7 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-   command: 'yarn start:test',
+   command: 'cross-env SERVER_PORT=3000 node ./server/app.mjs',
    url: 'http://localhost:3000',
    reuseExistingServer: !process.env.CI,
   },
