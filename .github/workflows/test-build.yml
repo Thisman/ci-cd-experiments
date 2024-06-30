@@ -110,7 +110,7 @@ jobs:
     - name: Install ligthouse global
       run: yarn add lighthouse -g
     - name: Run ligthouse
-      run: lighthouse ${{needs.Deploy_Test_Domain.outputs.url_test_domain}} --output=json --output-path=./metrics/lighthouse.report.json --save-assets
+      run: yarn check:metrics ${{needs.Deploy_Test_Domain.outputs.url_test_domain}}
     - uses: actions/upload-artifact@v4
       if: always()
       with:
