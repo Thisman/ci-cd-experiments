@@ -46,11 +46,13 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
-  Deploy:
+  Deploy_Test_Domain:
     permissions:
       pull-requests: write
     needs: [Linters, Tests]
     timeout-minutes: 60
+    outputs:
+      url_test_domain: ${{ env.AWS_S3_URL }}/testdeploy-${{github.run_id}}/index.html
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -91,3 +93,27 @@ jobs:
             You can check online by goes to ${{ env.AWS_S3_URL }}/testdeploy-${{github.run_id}}/index.html
             `
           })
+
+  Lighthouse:
+    needs: Deploy_Test_Domain
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm install -g yarn && yarn && yarn playwright install --with-deps
+    - name: Create folder for artifacts
+      run: mkdir ./metrics
+    - name: Install ligthouse global
+      run: yarn add lighthouse -g
+    - name: Run ligthouse
+      run: yarn check:metrics ${{needs.Deploy_Test_Domain.outputs.url_test_domain}}
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: metrics
+        path: metrics/
+        retention-days: 30
